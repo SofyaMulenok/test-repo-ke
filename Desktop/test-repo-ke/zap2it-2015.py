@@ -31,35 +31,42 @@ def parse_result(url,output,output1):
 	for h1 in soup.find_all('h1',{'id':'zc-program-title'}):
 		title=h1.text
 		
+		if not title:
+			title = ''
+		
 	for li in soup.find_all('li', {'id': 'zc-sc-episodes'}):
 		episode_guide_link = li.a['href']
 		episode_guide_link_full = episode_guide_link+'?aid=ask'
+		
+		if not episode_guide_link_full:
+			episode_guide_link_full = ''
 	
 	for img in soup.find_all('img', {'id':'zc-photogal-preview-main-image'}):
 		img_src =img['src']
 		img_src_full = img_src+'?aid=ask'
 		img_src_filename = 'tv/z2/'+img_src.rsplit('/')[-1]
+		
+		if not img_src_full:
+			img_src_full = ''
 	
 	for p in soup.find_all('p', {'id':'zc-sc-premise'}):
 		synopsis_long = p.text
 		synopsis = synopsis_long[:synopsis_long.find('.',50)]
 		
+		if not synopsis:
+			synopsis = ''
+		
 	for	dl in soup.find_all('dl', {'id': 'zc-sc-premiere'}):
 		text = dl.text
 		network = text[text.find('Network:')+9:-1]
+		
+		if not network:
+			network = ''
 	
 	url_full = url+'?aid=ask'
-	
-	if not title \
-		or not episode_guide_link_full  \
-		or not url_full \
-		or not img_src_full \
-		or not synopsis \
-		or not network:
-		return parse_result(url,output,output1)
-	else:
-		result = img_src_filename+'\t'+img_src_full+'\t'+url_full+'\t'+title+'\t'+synopsis+'\t'+url_full+'\t'+episode_guide_link_full+'\t'+network
- 		return result
+		
+	result = img_src_filename+'\t'+img_src_full+'\t'+url_full+'\t'+title+'\t'+synopsis+'\t'+url_full+'\t'+episode_guide_link_full+'\t'+network
+ 	return result
  		
 def img_parse_result(url,output,output1):
 
